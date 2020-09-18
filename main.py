@@ -18,4 +18,13 @@ board = boardGenerator(boardSize[0], boardSize[1])
 # Render board by using var:board to render function
 boardRenderer(board, boardSize[0], boardSize[1])
 
-positionToIndex(1, 2, boardSize[0], boardSize[1])
+
+""" Works!
+# __test__ : positionToIndex from a coordinate Example 
+index = positionToIndex(5, 2, boardSize[0], boardSize[1])
+"""
+
+""" Works!
+#__test__ : positionValue from an index Example
+positionValue(index, board)
+"""

@@ -1,14 +1,10 @@
-# import
-alphabet = []
-for letter in range(97, 123):
-    alphabet.append(chr(letter))
+# __import__
+from header import *
 
-# main functions
+# __main functions__
 
 
 def boardInput():
-    w = 0
-    h = 0
     while True:
         try:
             w = int(input("Enter the width of the board: "))
@@ -40,29 +36,37 @@ def boardGenerator(w, h):
 
 
 def boardRenderer(board, w, h):
+    i = 0
     print("   ", end='')
     # Index Row using a-z
     for a in range(w):
         print(" ", end='')
         print(alphabet[a], end='')
     print()
+
     for a in range(h):
         print(a+1, end='')  # Column index
         if a < 9:
             print("   ", end='')  # spacing after index for 1-digit
         else:
             print("  ", end='')  # spacing after index for 2-digit
+
         # board rendering
         for b in range(w):
-            print(board[a], end='')
+            print(board[i], end='')
             print(" ", end='')
+            i += 1
         print()
+
+# Find the postion of the value in a list[?] when given a coordinate[x,y]
 
 
 def positionToIndex(x, y, w, h):
     index = (x-1) + (y-1)*w
-    print(index)
+    #print("index:", index)
+    return index
 
 
-def positionChecker(index):
-    pass
+def positionValue(index, board):
+    # print(board[index])
+    return value
