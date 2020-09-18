@@ -40,15 +40,14 @@ def boardGenerator(w, h):
 
 
 def boardRenderer(board, w, h):
-    print("   ", end='')  # Space
+    print("   ", end='')
     # Index Row using a-z
     for a in range(w):
         print(" ", end='')
         print(alphabet[a], end='')
     print()
-    # Render The Board Out wih Column index
     for a in range(h):
-        print(a+1, end='')  # index
+        print(a+1, end='')  # Column index
         if a < 9:
             print("   ", end='')  # spacing after index for 1-digit
         else:
@@ -58,3 +57,12 @@ def boardRenderer(board, w, h):
             print(board[a], end='')
             print(" ", end='')
         print()
+
+
+def positionToIndex(x, y, w, h):
+    index = (x-1) + (y-1)*w
+    print(index)
+
+
+def positionChecker(index):
+    pass
