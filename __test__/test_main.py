@@ -29,6 +29,3 @@ while True:
     else:
         break
 """
-
-a = ["a", "b", "c"]
-print(a.index("d"))

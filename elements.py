@@ -145,10 +145,11 @@ def positionInput(w, h, prompt):
 
 
 def placeShip(w, h):
+    # Setup:
     # Length of ship base on size of board
-    lShipLength = math.floor(w/10)
-    mShipLength = carrierShip - math.floor(w/10)
-    sShipLength = cruiserShip - math.floor(w/10)
+    lShipLength = math.floor(w/2)
+    mShipLength = lShipLength - math.ceil(w/10)
+    sShipLength = mShipLength - math.ceil(w/10)
 
     # Width of ship base on size of board
     if w <= 10 and h <= 10:
@@ -163,9 +164,16 @@ def placeShip(w, h):
     mShipNum = 2
     sShipNum = 3
 
+    """
     # Number of ship base on size of board (ship occupy ~20% of board)
     t = w * h  # Total board area
     lShipArea = lShipNum * lShipLength * shipWidth  # Area of ship
-    mShipArea = mShipNum * lShipLength * shipWidth
-    sShipArea = sShipNum * lShipLength * shipWidth
-    fraction = (lShipArea+mShipArea+sShipArea)/t
+    mShipArea = mShipNum * mShipLength * shipWidth
+    sShipArea = sShipNum * sShipLength * shipWidth
+    fraction = (lShipArea+mShipArea+sShipArea)/t  # Percentage occupied by ship
+    print(fraction)
+    """
+
+    # Input
+
+    # Placement (x,y,orientation)
