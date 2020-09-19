@@ -13,7 +13,8 @@ except SyntaxError:
 boardSize = boardInput()
 
 # Generate board according to var:boardSize and pass it to var:board
-board = boardGenerator(boardSize[0], boardSize[1])
+board = boardGenerator(1, boardSize[0], boardSize[1])
+boardHiddenval = boardGenerator(2, boardSize[0], boardSize[1])
 
 # Render board by using var:board to render function
 boardRenderer(board, boardSize[0], boardSize[1])
@@ -28,4 +29,4 @@ index = positionToIndex(
 # __test__ : positionValue from an index Example
 print(positionValue(index, board))"""
 
-placeShip(boardSize[0], boardSize[1])
+placeShip(board, boardHiddenval, boardSize[0], boardSize[1])

@@ -2,6 +2,7 @@
 from header import *
 from error import *
 import math
+from random import randint
 # __main functions__
 
 
@@ -20,7 +21,7 @@ def boardInput():
         except ValueTooLargeError:
             print("Maximum width is 26, please try again")
         except ValueTooSmallError:
-            print("Minimum height is 8, please try again")
+            print("Minimum width is 8, please try again")
         else:
             break
 
@@ -45,11 +46,85 @@ def boardInput():
     return [w, h]
 
 
-def boardGenerator(w, h):
+# Find the postion of the value in a list[?] when given a coordinate[x,y]
 
-    board = []
-    for a in range(w*h):
-        board.append(0)
+
+def positionToIndex(x, y, w, h):
+    index = (x-1) + (y-1)*w
+    #print("index:", index)
+    return index
+
+# Return value when given a index
+
+
+def positionValue(index, board):
+    value = board[index]
+    # print(value)
+    return value
+
+
+def boardGenerator(mode, board, w, h):
+    # set board index
+    if mode == 1:
+        for x in range(w*h):
+            board.append(0)
+        return board
+
+    # set board hidden value index
+
+    if mode == 2:
+        # top vertical index value = t
+        l = []
+        for x in range(w):  # Add each position index that need to be change to list
+            l.append(positionToIndex(x+1, 1, w, h))
+        for a in l:  # Replace Value using the Given Index
+            board.pop(a)
+            board.insert(a, 't')
+
+        # bottom vertical index value = b
+        l = []
+        for x in range(w):
+            l.append(positionToIndex(x+1, h, w, h))
+        for a in l:
+            board.pop(a)
+            board.insert(a, 'b')
+
+        # left index value = r
+        l = []
+        for y in range(h):
+            l.append(positionToIndex(1, y+1, w, h))
+        for a in l:
+            board.pop(a)
+            board.insert(a, 'l')
+
+        # right index value = r
+        l = []
+        for y in range(h):
+            l.append(positionToIndex(w, y+1, w, h))
+        for a in l:
+            board.pop(a)
+            board.insert(a, 'r')
+
+        # top left hidden value = a
+        board.pop(0)
+        board.insert(0, 'tl')
+
+        # top right hidden value = b
+        i = positionToIndex(w, 1, w, h)
+        board.pop(i)
+        board.insert(i, 'tr')
+
+        # bottom left hidden value = c
+        i = positionToIndex(1, h, w, h)
+        board.pop(i)
+        board.insert(i, 'bl')
+
+        # bottom right hidden value = d
+        i = positionToIndex(w, h, w, h)
+        board.pop(i)
+        board.insert(i, 'br')
+
+        return board
     """
     # Custom Generate
     for a in range(w*h):
@@ -58,7 +133,6 @@ def boardGenerator(w, h):
         else:
             board.append(0)
     """
-    return board
 
 
 def boardRenderer(board, w, h):
@@ -84,21 +158,11 @@ def boardRenderer(board, w, h):
             i += 1
         print()
 
-# Find the postion of the value in a list[?] when given a coordinate[x,y]
 
-
-def positionToIndex(x, y, w, h):
-    index = (x-1) + (y-1)*w
-    #print("index:", index)
-    return index
-
-# Return value when given a index
-
-
-def positionValue(index, board):
-    value = board[index]
-    # print(value)
-    return value
+# Test boardHindenval Generator
+"""board = boardGenerator(1, board, 19, 10)
+board = (boardGenerator(2, board, 19, 10))
+boardRenderer(board, 19, 10)"""
 
 # Input coordinate with error if its in the board boundary
 
@@ -144,7 +208,7 @@ def positionInput(w, h, prompt):
 # Ship Placement from user input; with variable ship size/number according to board size
 
 
-def placeShip(w, h):
+def placeShip(board, boardHiddenval, w, h):
     # Setup:
     # Length of ship base on size of board
     lShipLength = math.floor(w/2)
@@ -164,6 +228,10 @@ def placeShip(w, h):
     mShipNum = 2
     sShipNum = 3
 
+    randomindex = randomgenerator(w, h)
+
+    # generate some integers
+
     """
     # Number of ship base on size of board (ship occupy ~20% of board)
     t = w * h  # Total board area
@@ -177,3 +245,12 @@ def placeShip(w, h):
     # Input
 
     # Placement (x,y,orientation)
+
+
+def randomgenerator(w, h):
+    seed(1)
+    # generate some integers
+    for _ in range(w*h):
+        randomindex = randint(0, w*h)
+
+    return randomindex
