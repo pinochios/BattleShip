@@ -35,7 +35,7 @@ while True:
         break
 """
 
-# up : '\x00H' down: '\x00P' left: '\x00K' Right: '\x00M'
+"""# up : '\x00H' down: '\x00P' left: '\x00K' Right: '\x00M'
 click.echo('Continue? [yn] ', nl=False)
 c = click.getchar()
 click.echo()
@@ -49,7 +49,7 @@ elif c == '\x00M':
     click.echo('Down')
 else:
     click.echo('Invalid input :(')
-
+"""
 
 """def KeyCheck():
     global Break_KeyCheck
@@ -72,3 +72,15 @@ else:
 
 Thread(target=KeyCheck).start()
 # BACKGROUND CODE"""
+
+a = 1
+
+
+def test(a):
+    a += 1
+    return a
+
+
+a = test(a)
+b = test(a)
+print(b)

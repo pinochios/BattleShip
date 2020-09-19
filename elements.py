@@ -76,7 +76,6 @@ def boardGenerator(mode, board, w, h):
             else:
                 board.append(0)
         """
-        return board
 
     # set board hidden value index
 
@@ -132,7 +131,7 @@ def boardGenerator(mode, board, w, h):
         board.pop(i)
         board.insert(i, 'br')
 
-        return board
+    return board
 
 
 def boardRenderer(board, w, h):
@@ -228,7 +227,7 @@ def placeShip(board, boardHiddenval, w, h):
     mShipNum = 2
     sShipNum = 3
 
-    randomindex = randomgenerator(w, h)
+    #randomindex = randomgenerator(w, h)
 
     # generate some integers
 
@@ -247,10 +246,11 @@ def placeShip(board, boardHiddenval, w, h):
     # Placement (x,y,orientation)
 
 
+"""
 def randomgenerator(w, h):
     seed(1)
     # generate some integers
     for _ in range(w*h):
         randomindex = randint(0, w*h)
 
-    return randomindex
+    return randomindex"""
