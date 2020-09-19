@@ -18,13 +18,12 @@ board = boardGenerator(boardSize[0], boardSize[1])
 # Render board by using var:board to render function
 boardRenderer(board, boardSize[0], boardSize[1])
 
+# __test__ : input position
+coordinate = positionInput(boardSize[0], boardSize[1], "Enter Coordinate")
 
-""" Works!
-# __test__ : positionToIndex from a coordinate Example 
-index = positionToIndex(5, 2, boardSize[0], boardSize[1])
-"""
+# __test__ : positionToIndex from a coordinate Example
+index = positionToIndex(
+    coordinate[0], coordinate[1], boardSize[0], boardSize[1])
 
-""" Works!
-#__test__ : positionValue from an index Example
-positionValue(index, board)
-"""
+# __test__ : positionValue from an index Example
+print(positionValue(index, board))

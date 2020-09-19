@@ -13,7 +13,7 @@ class ValueTooLargeError(Error):
     pass
 
 
-a = 10
+"""a = 10
 
 while True:
     try:
@@ -28,3 +28,7 @@ while True:
         print("Too large value, please try again")
     else:
         break
+"""
+
+a = ["a", "b", "c"]
+print(a.index("d"))

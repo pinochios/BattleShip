@@ -50,6 +50,14 @@ def boardGenerator(w, h):
     board = []
     for a in range(w*h):
         board.append(0)
+    """
+    # Custom Generate
+    for a in range(w*h):
+        if a == 11:
+            board.append(1)
+        else:
+            board.append(0)
+    """
     return board
 
 
@@ -84,7 +92,51 @@ def positionToIndex(x, y, w, h):
     #print("index:", index)
     return index
 
+# Return value when given a index
+
 
 def positionValue(index, board):
-    # print(board[index])
+    value = board[index]
+    # print(value)
     return value
+
+# Input coordinate with error if its in the board boundary
+
+
+def positionInput(w, h, prompt):
+    print(prompt)
+    while True:
+        try:
+            x = str(input("x: "))
+            # Turn alpabetical coordinate to numerical coordinate
+            x = alphabet.index(x) + 1
+            if x > w:
+                raise ValueTooLargeError
+            else:
+                pass
+        except ValueError:
+            print("Invalid coordinate, please try again")
+        except ValueTooLargeError:
+            print("Maximum coordinate x is",
+                  alphabet[w-1], ", please try again")
+        else:
+            break
+    while True:
+        try:
+            y = int(input("y: "))
+            if y > h:
+                raise ValueTooLargeError
+            elif y < 1:
+                raise ValueTooSmallError
+            else:
+                pass
+        except ValueError:
+            print("Invalid coordinate, please try again")
+        except ValueTooLargeError:
+            print("Maximum coordinate y is", h, ", please try again")
+        except ValueTooSmallError:
+            print("Minimum coordinate y is 1, please try again")
+        else:
+            break
+
+    return[x, y]
