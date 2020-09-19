@@ -1,5 +1,6 @@
 # __import__
 from header import *
+from error import *
 
 # __main functions__
 
@@ -8,19 +9,36 @@ def boardInput():
     while True:
         try:
             w = int(input("Enter the width of the board: "))
+            if w > 26:
+                raise ValueTooLargeError
+            elif w < 8:
+                raise ValueTooSmallError
+            else:
+                pass
         except ValueError:
             print("Invalid value, please try again")
+        except ValueTooLargeError:
+            print("Maximum width is 26, please try again")
+        except ValueTooSmallError:
+            print("Minimum height is 8, please try again")
         else:
-            if w > 26 or w <= 0:
-                print("Maximum width is 26, please try again")
-            else:
-                break
+            break
 
     while True:
         try:
             h = int(input("Enter the height of the board: "))
+            if h > 26:
+                raise ValueTooLargeError
+            elif h < 8:
+                raise ValueTooSmallError
+            else:
+                pass
         except ValueError:
             print("Invalid value, please try again")
+        except ValueTooLargeError:
+            print("Maximum height is 26, please try again")
+        except ValueTooSmallError:
+            print("Minimum height is 8, please try again")
         else:
             break
 
