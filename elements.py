@@ -68,6 +68,14 @@ def boardGenerator(mode, board, w, h):
     if mode == 1:
         for x in range(w*h):
             board.append(0)
+        """
+        # Custom Generate
+        for a in range(w*h):
+            if a == 11:
+                board.append(1)
+            else:
+                board.append(0)
+        """
         return board
 
     # set board hidden value index
@@ -125,14 +133,6 @@ def boardGenerator(mode, board, w, h):
         board.insert(i, 'br')
 
         return board
-    """
-    # Custom Generate
-    for a in range(w*h):
-        if a == 11:
-            board.append(1)
-        else:
-            board.append(0)
-    """
 
 
 def boardRenderer(board, w, h):
