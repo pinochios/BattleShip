@@ -13,12 +13,16 @@ except SyntaxError:
 boardSize = boardInput()
 
 # Generate board according to var:boardSize and pass it to var:board
-board = boardGenerator(1, board, boardSize[0], boardSize[1])
-boardHiddenval = boardGenerator(2, board, boardSize[0], boardSize[1])
+board = Board(boardTemplate, boardSize[0], boardSize[1])
+board.boardGenerator()
+
+boardHiddenval = Board(boardTemplate2, boardSize[0], boardSize[1])
+boardHiddenval.boardGenerator()
+boardHiddenval.boardHiddenvalGenerator()
 
 # Render board by using var:board to render function
-boardRenderer(board, boardSize[0], boardSize[1])
-boardRenderer(boardHiddenval, boardSize[0], boardSize[1])
+board.boardRenderer()
+boardHiddenval.boardRenderer()
 
 """# __test__ : input position
 coordinate = positionInput(boardSize[0], boardSize[1], "Enter Coordinate")

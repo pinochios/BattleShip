@@ -1,9 +1,26 @@
 # __import__
-from header import *
-from error import *
 import math
 from random import randint
+
+from error import *
+from header import *
+
 # __main functions__
+# Find the postion of the value in a list[?] when given a coordinate[x,y]
+
+
+def positionToIndex(x, y, w, h):
+    index = (x-1) + (y-1)*w
+    #print("index:", index)
+    return index
+
+# Return value when given a index
+
+
+def positionValue(index, board):
+    value = board[index]
+    # print(value)
+    return value
 
 
 def boardInput():
@@ -45,124 +62,6 @@ def boardInput():
 
     return [w, h]
 
-
-# Find the postion of the value in a list[?] when given a coordinate[x,y]
-
-
-def positionToIndex(x, y, w, h):
-    index = (x-1) + (y-1)*w
-    #print("index:", index)
-    return index
-
-# Return value when given a index
-
-
-def positionValue(index, board):
-    value = board[index]
-    # print(value)
-    return value
-
-
-def boardGenerator(mode, board, w, h):
-    # set board index
-    if mode == 1:
-        for x in range(w*h):
-            board.append(0)
-        """
-        # Custom Generate
-        for a in range(w*h):
-            if a == 11:
-                board.append(1)
-            else:
-                board.append(0)
-        """
-
-    # set board hidden value index
-
-    if mode == 2:
-        # top vertical index value = t
-        l = []
-        for x in range(w):  # Add each position index that need to be change to list
-            l.append(positionToIndex(x+1, 1, w, h))
-        for a in l:  # Replace Value using the Given Index
-            board.pop(a)
-            board.insert(a, 't')
-
-        # bottom vertical index value = b
-        l = []
-        for x in range(w):
-            l.append(positionToIndex(x+1, h, w, h))
-        for a in l:
-            board.pop(a)
-            board.insert(a, 'b')
-
-        # left index value = r
-        l = []
-        for y in range(h):
-            l.append(positionToIndex(1, y+1, w, h))
-        for a in l:
-            board.pop(a)
-            board.insert(a, 'l')
-
-        # right index value = r
-        l = []
-        for y in range(h):
-            l.append(positionToIndex(w, y+1, w, h))
-        for a in l:
-            board.pop(a)
-            board.insert(a, 'r')
-
-        # top left hidden value = a
-        board.pop(0)
-        board.insert(0, 'tl')
-
-        # top right hidden value = b
-        i = positionToIndex(w, 1, w, h)
-        board.pop(i)
-        board.insert(i, 'tr')
-
-        # bottom left hidden value = c
-        i = positionToIndex(1, h, w, h)
-        board.pop(i)
-        board.insert(i, 'bl')
-
-        # bottom right hidden value = d
-        i = positionToIndex(w, h, w, h)
-        board.pop(i)
-        board.insert(i, 'br')
-
-    return board
-
-
-def boardRenderer(board, w, h):
-    i = 0
-    print("   ", end='')
-    # Index Row using a-z
-    for a in range(w):
-        print(" ", end='')
-        print(alphabet[a], end='')
-    print()
-
-    for a in range(h):
-        print(a+1, end='')  # Column index
-        if a < 9:
-            print("   ", end='')  # spacing after index for 1-digit
-        else:
-            print("  ", end='')  # spacing after index for 2-digit
-
-        # board rendering
-        for b in range(w):
-            print(board[i], end='')
-            print(" ", end='')
-            i += 1
-        print()
-
-
-# Test boardHindenval Generator
-"""board = boardGenerator(1, board, 19, 10)
-board = (boardGenerator(2, board, 19, 10))
-boardRenderer(board, 19, 10)"""
-
 # Input coordinate with error if its in the board boundary
 
 
@@ -203,6 +102,108 @@ def positionInput(w, h, prompt):
             break
 
     return[x, y]
+
+# main class
+
+
+class Board:
+    def __init__(self, board, w, h):
+        self.board = board
+        self.w = w
+        self.h = h
+
+    def boardGenerator(self):
+        # set board index
+        for x in range(self.w*self.h):
+            self.board.append(0)
+        """
+        # Custom Generate
+        for a in range(w*h):
+            if a == 11:
+                board.append(1)
+            else:
+                board.append(0)
+        """
+        # return self.board
+
+    def boardHiddenvalGenerator(self):  # TODO : add self
+        # set board hidden value index
+        # top vertical index value = t
+        l = []
+        for x in range(self.w):  # Add each position index that need to be change to list
+            l.append(positionToIndex(x+1, 1, self.w, self.h))
+        for a in l:  # Replace Value using the Given Index
+            self.board.pop(a)
+            self.board.insert(a, 't')
+
+        # bottom vertical index value = b
+        l = []
+        for x in range(self.w):
+            l.append(positionToIndex(x+1, self.h, self.w, self.h))
+        for a in l:
+            self.board.pop(a)
+            self.board.insert(a, 'b')
+
+        # left index value = r
+        l = []
+        for y in range(self.h):
+            l.append(positionToIndex(1, y+1, self.w, self.h))
+        for a in l:
+            self.board.pop(a)
+            self.board.insert(a, 'l')
+
+        # right index value = r
+        l = []
+        for y in range(self.h):
+            l.append(positionToIndex(self.w, y+1, self.w, self.h))
+        for a in l:
+            self.board.pop(a)
+            self.board.insert(a, 'r')
+
+        # top left hidden value = a
+        self.board.pop(0)
+        self.board.insert(0, 'tl')
+
+        # top right hidden value = b
+        i = positionToIndex(self.w, 1, self.w, self.h)
+        self.board.pop(i)
+        self.board.insert(i, 'tr')
+
+        # bottom left hidden value = c
+        i = positionToIndex(1, self.h, self.w, self.h)
+        self.board.pop(i)
+        self.board.insert(i, 'bl')
+
+        # bottom right hidden value = d
+        i = positionToIndex(self.w, self.h, self.w, self.h)
+        self.board.pop(i)
+        self.board.insert(i, 'br')
+
+        # return self.board
+
+    def boardRenderer(self):
+        i = 0
+        print("   ", end='')
+        # Index Row using a-z
+        for a in range(self.w):
+            print(" ", end='')
+            print(alphabet[a], end='')
+        print()
+
+        for a in range(self.h):
+            print(a+1, end='')  # Column index
+            if a < 9:
+                print("   ", end='')  # spacing after index for 1-digit
+            else:
+                print("  ", end='')  # spacing after index for 2-digit
+
+            # board rendering
+            for b in range(self.w):
+                print(self.board[i], end='')
+                print(" ", end='')
+                i += 1
+            print()
+
 
 # Ship Placement from user input; with variable ship size/number according to board size
 
