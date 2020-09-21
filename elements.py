@@ -205,6 +205,8 @@ class Board:
             print()
 
 
+class Ship(object):
+    pass
 # Ship Placement from user input; with variable ship size/number according to board size
 
 
@@ -247,11 +249,10 @@ def placeShip(board, boardHiddenval, w, h):
     # Placement (x,y,orientation)
 
 
-"""
 def randomgenerator(w, h):
     seed(1)
     # generate some integers
     for _ in range(w*h):
         randomindex = randint(0, w*h)
 
-    return randomindex"""
+    return randomindex
