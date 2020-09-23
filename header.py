@@ -5,3 +5,8 @@ for letter in range(97, 123):
 
 boardTemplate = []
 boardTemplate2 = []
+
+# Default Number of ship
+lShipNum = 1
+mShipNum = 2
+sShipNum = 3

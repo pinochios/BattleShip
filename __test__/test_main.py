@@ -73,14 +73,17 @@ else:
 Thread(target=KeyCheck).start()
 # BACKGROUND CODE"""
 
-a = 1
+
+class Ship:  # TODO - Init all needed variables
+    def __init__(self, shipLength, shipWidth):
+        self.shipLength = shipLength
+        self.shipWidth = shipWidth
+
+    def add(self, x, y):
+        self.x = x
+        self.y = y
 
 
-def test(a):
-    a += 1
-    return a
-
-
-a = test(a)
-b = test(a)
-print(b)
+a = Ship(1, 2)
+a.add(5, 6)
+print(a.x)

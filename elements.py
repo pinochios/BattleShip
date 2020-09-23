@@ -6,13 +6,22 @@ from error import *
 from header import *
 
 # __main functions__
-# Find the postion of the value in a list[?] when given a coordinate[x,y]
+# Find the index in a list[?] when given a coordinate[x,y]
 
 
 def positionToIndex(x, y, w, h):
     index = (x-1) + (y-1)*w
     #print("index:", index)
     return index
+
+# Find the coordinate[x,y] when given an index
+
+
+def indexToPosition(index, w, h):
+    x = (index+1) % w
+    y = math.ceil((index+1)/w)
+
+    return [x, y]
 
 # Return value when given a index
 
@@ -21,6 +30,20 @@ def positionValue(index, board):
     value = board[index]
     # print(value)
     return value
+
+# alphabetical coordinate to coordinate
+
+
+def alpToCoordinate(x):
+    x = alphabet.index(x) + 1
+    return x
+
+#  coordinate to alphabetical coordinate
+
+
+def coordinateToAlp(x):
+    x = alphabet[x-1]
+    return x
 
 
 def boardInput():
@@ -71,7 +94,7 @@ def positionInput(w, h, prompt):
         try:
             x = str(input("x: "))
             # Turn alpabetical coordinate to numerical coordinate
-            x = alphabet.index(x) + 1
+            x = alpToCoordinate(x)
             if x > w:
                 raise ValueTooLargeError
             else:
@@ -103,7 +126,10 @@ def positionInput(w, h, prompt):
 
     return[x, y]
 
-# main class
+
+# def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
+
+    # __main class__
 
 
 class Board:
@@ -124,7 +150,6 @@ class Board:
             else:
                 board.append(0)
         """
-        # return self.board
 
     def boardHiddenvalGenerator(self):  # TODO : add self
         # set board hidden value index
@@ -179,8 +204,6 @@ class Board:
         self.board.pop(i)
         self.board.insert(i, 'br')
 
-        # return self.board
-
     def boardRenderer(self):
         i = 0
         print("   ", end='')
@@ -204,51 +227,96 @@ class Board:
                 i += 1
             print()
 
-
-class Ship(object):
-    pass
 # Ship Placement from user input; with variable ship size/number according to board size
 
 
-def placeShip(board, boardHiddenval, w, h):
-    # Setup:
-    # Length of ship base on size of board
-    lShipLength = math.floor(w/2)
-    mShipLength = lShipLength - math.ceil(w/10)
-    sShipLength = mShipLength - math.ceil(w/10)
+class ShipSpec:
+    def __init__(self, w, h, shipSize):
+        self.w = w
+        self.h = h
+        self.shipSize = shipSize
 
-    # Width of ship base on size of board
-    if w <= 10 and h <= 10:
-        shipWidth = 1
-    elif w > 10 and h > 10:
-        shipWidth = 2
-    else:
-        shipWidth = 3
+    def shipSetup(self):
+        # Setup:
+        area = self.w * self.h
+        # Length of ship base on size of board
+        if self.shipSize == "large":
+            shipLength = math.floor(area/20)
+        elif self.shipSize == "medium":
+            shipLength = math.floor(area/20)
+            shipLength = shipLength - math.ceil(area/100)
+        elif self.shipSize == "small":
+            shipLength = math.floor(area/20)
+            shipLength = shipLength - math.ceil(area/100)
+            shipLength = shipLength - math.ceil(area/100)
+        else:
+            print("Invalid Size")
 
-    # Default Number of ship
-    lShipNum = 1
-    mShipNum = 2
-    sShipNum = 3
+        # Width of ship base on size of board
+        if area <= 100:
+            shipWidth = 1
+        elif area < 200:
+            shipWidth = 2
+        else:
+            shipWidth = 3
 
-    #randomindex = randomgenerator(w, h)
+        return [shipLength, shipWidth]
 
-    # generate some integers
+        #randomindex = randomgenerator(w, h)
 
-    """
-    # Number of ship base on size of board (ship occupy ~20% of board)
-    t = w * h  # Total board area
-    lShipArea = lShipNum * lShipLength * shipWidth  # Area of ship
-    mShipArea = mShipNum * mShipLength * shipWidth
-    sShipArea = sShipNum * sShipLength * shipWidth
-    fraction = (lShipArea+mShipArea+sShipArea)/t  # Percentage occupied by ship
-    print(fraction)
-    """
+        # generate some integers
 
-    # Input
+        """
+        # Number of ship base on size of board (ship occupy ~20% of board)
+        t = w * h  # Total board area
+        lShipArea = lShipNum * lShipLength * shipWidth  # Area of ship
+        mShipArea = mShipNum * mShipLength * shipWidth
+        sShipArea = sShipNum * sShipLength * shipWidth
+        fraction = (lShipArea+mShipArea+sShipArea)/t  # Percentage occupied by ship
+        print(fraction)
+        """
 
-    # Placement (x,y,orientation)
+        # Input
+
+        # Placement (x,y,orientation)
 
 
+class Ship:  # TODO - Init all needed variables
+    def __init__(self, shipLength, shipWidth):
+        self.shipLength = shipLength
+        self.shipWidth = shipWidth
+
+    def initLocation(self, initIndex):
+        self.initIndex = initIndex
+
+    def initHitbox(self, board):
+        self.tl = self.initIndex
+        self.board = board
+        self.tr = positionToIndex(
+            indexToPosition(self.tl, self.board.w, self.board.h)[
+                0] + self.shipWidth - 1,  # x
+            indexToPosition(self.tl, self.board.w, self.board.h)[1],
+            self.board.w,
+            self.board.h  # y
+        )
+        self.bl = positionToIndex(
+            indexToPosition(self.tl, self.board.w, self.board.h)[0],  # x
+            indexToPosition(self.tl, self.board.w, self.board.h)[
+                1] + self.shipLength - 1,
+            self.board.w,
+            self.board.h  # y
+        )
+        self.br = positionToIndex(
+            indexToPosition(self.tl, self.board.w, self.board.h)[
+                0] + self.shipWidth - 1,  # x
+            indexToPosition(self.tl, self.board.w, self.board.h)[
+                1] + self.shipLength - 1,
+            self.board.w,
+            self.board.h  # y
+        )
+
+
+""" # TODO - place func elsewhere
 def randomgenerator(w, h):
     seed(1)
     # generate some integers
@@ -256,3 +324,4 @@ def randomgenerator(w, h):
         randomindex = randint(0, w*h)
 
     return randomindex
+"""
