@@ -27,19 +27,25 @@ board.boardRenderer()
 largeShipSpec = ShipSpec(board.w, board.h, "large")
 largeShip = Ship(largeShipSpec.shipSetup()[
                  0], largeShipSpec.shipSetup()[1])
+
 mediumShipSpec = ShipSpec(board.w, board.h, "medium")
 mediumShip = Ship(mediumShipSpec.shipSetup()[
                   0], mediumShipSpec.shipSetup()[1])
+
 smallShipSpec = ShipSpec(board.w, board.h, "small")
 smallShip = Ship(smallShipSpec.shipSetup()[
                  0], smallShipSpec.shipSetup()[1])
 
+# init location of ship
 largeShip.initLocation(0)
 largeShip.initHitbox(board)
-print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
+#print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
 
 board.placeShip(largeShip)
 board.boardRenderer()
+board.removeShip(largeShip)
+board.boardRenderer()
+
 """
 #__test__ : board hidden renderer
 boardHiddenval.boardRenderer()

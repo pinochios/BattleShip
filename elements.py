@@ -253,6 +253,32 @@ class Board:
             self.board.pop(a)
             self.board.insert(a, 's')
 
+    def removeShip(self, ship):
+        # import hitbox of ship
+        tl = ship.tl
+        tr = ship.tr
+        bl = ship.bl
+        br = ship.br
+        tl_x = indexToPosition(tl, self.w, self.h)[0]
+        tl_y = indexToPosition(tl, self.w, self.h)[1]
+        tr_x = indexToPosition(tr, self.w, self.h)[0]
+        tr_y = indexToPosition(tr, self.w, self.h)[1]
+        bl_x = indexToPosition(bl, self.w, self.h)[0]
+        bl_y = indexToPosition(bl, self.w, self.h)[1]
+        br_x = indexToPosition(br, self.w, self.h)[0]
+        br_y = indexToPosition(br, self.w, self.h)[1]
+
+        # fill space occupied by ship
+        l = []
+        w = tr_x-tl_x+1
+        h = br_y-tl_y+1
+        for x in range(w):  # Add each position index that need to be change to list
+            for y in range(h):
+                l.append(positionToIndex(x+1, y+1, self.w, self.h))
+        for a in l:  # Replace Value using the Given Index
+            self.board.pop(a)
+            self.board.insert(a, '0')
+
 
 # Ship Placement from user input; with variable ship size/number according to board size
 
