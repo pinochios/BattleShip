@@ -37,9 +37,9 @@ smallShip = Ship(smallShipSpec.shipSetup()[
                  0], smallShipSpec.shipSetup()[1])
 
 # init location of ship
-largeShip.initLocation(0)
+largeShip.initLocation(10)
 largeShip.initHitbox(board)
-#print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
+print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
 
 board.placeShip(largeShip)
 board.boardRenderer()
