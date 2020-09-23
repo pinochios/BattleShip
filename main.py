@@ -38,8 +38,9 @@ smallShip = Ship(smallShipSpec.shipSetup()[
 largeShip.initLocation(0)
 largeShip.initHitbox(board)
 print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
-# board.placeShip()
 
+board.placeShip(largeShip)
+board.boardRenderer()
 """
 #__test__ : board hidden renderer
 boardHiddenval.boardRenderer()

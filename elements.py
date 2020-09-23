@@ -227,6 +227,33 @@ class Board:
                 i += 1
             print()
 
+    def placeShip(self, ship):
+        # import hitbox of ship
+        tl = ship.tl
+        tr = ship.tr
+        bl = ship.bl
+        br = ship.br
+        tl_x = indexToPosition(tl, self.w, self.h)[0]
+        tl_y = indexToPosition(tl, self.w, self.h)[1]
+        tr_x = indexToPosition(tr, self.w, self.h)[0]
+        tr_y = indexToPosition(tr, self.w, self.h)[1]
+        bl_x = indexToPosition(bl, self.w, self.h)[0]
+        bl_y = indexToPosition(bl, self.w, self.h)[1]
+        br_x = indexToPosition(br, self.w, self.h)[0]
+        br_y = indexToPosition(br, self.w, self.h)[1]
+
+        # fill space occupied by ship
+        l = []
+        w = tr_x-tl_x+1
+        h = br_y-tl_y+1
+        for x in range(w):  # Add each position index that need to be change to list
+            for y in range(h):
+                l.append(positionToIndex(x+1, y+1, self.w, self.h))
+        for a in l:  # Replace Value using the Given Index
+            self.board.pop(a)
+            self.board.insert(a, 's')
+
+
 # Ship Placement from user input; with variable ship size/number according to board size
 
 
@@ -236,17 +263,17 @@ class ShipSpec:
         self.h = h
         self.shipSize = shipSize
 
-    def shipSetup(self):
+    def shipSetup(self):  # TODO - Improve Ship Size Algorithm
         # Setup:
         area = self.w * self.h
         # Length of ship base on size of board
         if self.shipSize == "large":
-            shipLength = math.floor(area/20)
+            shipLength = math.floor(area/math.sqrt(area)/2)
         elif self.shipSize == "medium":
-            shipLength = math.floor(area/20)
+            shipLength = math.floor(area/math.sqrt(area)/2)
             shipLength = shipLength - math.ceil(area/100)
         elif self.shipSize == "small":
-            shipLength = math.floor(area/20)
+            shipLength = math.floor(area/math.sqrt(area)/2)
             shipLength = shipLength - math.ceil(area/100)
             shipLength = shipLength - math.ceil(area/100)
         else:
@@ -255,10 +282,12 @@ class ShipSpec:
         # Width of ship base on size of board
         if area <= 100:
             shipWidth = 1
-        elif area < 200:
+        elif area < 150:
             shipWidth = 2
-        else:
+        elif area < 200:
             shipWidth = 3
+        else:
+            shipWidth = 4
 
         return [shipLength, shipWidth]
 
@@ -281,38 +310,38 @@ class ShipSpec:
         # Placement (x,y,orientation)
 
 
-class Ship:  # TODO - Init all needed variables
+class Ship:
     def __init__(self, shipLength, shipWidth):
         self.shipLength = shipLength
         self.shipWidth = shipWidth
 
     def initLocation(self, initIndex):
-        self.initIndex = initIndex
+        self.initIndex = initIndex  # Set starting Location
 
-    def initHitbox(self, board):
+    def initHitbox(self, board):  # Generate all 4 points of hitbox
         self.tl = self.initIndex
         self.board = board
         self.tr = positionToIndex(
             indexToPosition(self.tl, self.board.w, self.board.h)[
                 0] + self.shipWidth - 1,  # x
-            indexToPosition(self.tl, self.board.w, self.board.h)[1],
+            indexToPosition(self.tl, self.board.w, self.board.h)[1],  # y
             self.board.w,
-            self.board.h  # y
+            self.board.h
         )
         self.bl = positionToIndex(
             indexToPosition(self.tl, self.board.w, self.board.h)[0],  # x
             indexToPosition(self.tl, self.board.w, self.board.h)[
-                1] + self.shipLength - 1,
+                1] + self.shipLength - 1,  # y
             self.board.w,
-            self.board.h  # y
+            self.board.h
         )
         self.br = positionToIndex(
             indexToPosition(self.tl, self.board.w, self.board.h)[
                 0] + self.shipWidth - 1,  # x
             indexToPosition(self.tl, self.board.w, self.board.h)[
-                1] + self.shipLength - 1,
+                1] + self.shipLength - 1,  # y
             self.board.w,
-            self.board.h  # y
+            self.board.h
         )
 
 
