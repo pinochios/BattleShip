@@ -23,7 +23,6 @@ boardHiddenval.boardHiddenvalGenerator()
 # Render board by using var:board to render function
 board.boardRenderer()
 
-positionToIndex
 # ship objects
 largeShipSpec = ShipSpec(board.w, board.h, "large")
 largeShip = Ship(largeShipSpec.shipSetup()[
