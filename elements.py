@@ -372,7 +372,19 @@ class Ship:
 
     # Move Ship Hitbox
     def moveHitbox(self, x, y, board):
-        pass
+        self.tl_x = self.tl_x + x
+        self.tl_y = self.tl_y + y
+        self.tr_x = self.tr_x + x
+        self.tr_y = self.tr_y + y
+        self.bl_x = self.bl_x + x
+        self.bl_y = self.bl_y + y
+        self.br_x = self.br_x + x
+        self.br_y = self.br_y + y
+
+        self.tl = positionToIndex(self.tl_x, self.tl_y, board.w, board.h)
+        self.tr = positionToIndex(self.tr_x, self.tr_y, board.w, board.h)
+        self.bl = positionToIndex(self.bl_x, self.bl_y, board.w, board.h)
+        self.br = positionToIndex(self.br_x, self.br_y, board.w, board.h)
 
     # Rotate Ship Clock Wise
 

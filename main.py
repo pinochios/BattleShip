@@ -39,12 +39,19 @@ smallShip = Ship(smallShipSpec.shipSetup()[
 # init location of ship
 largeShip.initLocation(10)
 largeShip.initHitbox(board)
-print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
+#print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
 
+# __test__ : move ship
 board.placeShip(largeShip)
 board.boardRenderer()
 board.removeShip(largeShip)
+largeShip.moveHitbox(-1, 2, board)
+board.placeShip(largeShip)
 board.boardRenderer()
+
+"""board.removeShip(largeShip)
+board.boardRenderer()"""
+
 
 """
 #__test__ : board hidden renderer
