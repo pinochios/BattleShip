@@ -140,21 +140,22 @@ def positionInput(w, h, prompt):
     return[x, y]
 
 
-def keyboardShipMove(Ship, Board):
+def keyboardShipMove(Ship, Board, BoardHiddenValue):
     """
     docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
     """
     while True:
+        std_check = BoardHiddenValue.checkBoarder(Ship)
         x = 0
         y = 0
         key = keyboardInput()
-        if key == 'up':
+        if key == 'up' and std_check != 'top':
             y = -1
-        elif key == 'down':
+        elif key == 'down' and std_check != 'bottom':
             y = 1
-        elif key == 'left':
+        elif key == 'left' and std_check != 'left':
             x = -1
-        elif key == 'right':
+        elif key == 'right' and std_check != 'right':
             x = 1
         elif key == 'ccv':
             pass
@@ -202,6 +203,7 @@ class Board:
         for a in l:  # Replace Value using the Given Index
             self.board.pop(a)
             self.board.insert(a, 't')
+        self.t_Boarder = l  # store list to object
 
         # bottom vertical index value = b
         l = []
@@ -210,6 +212,7 @@ class Board:
         for a in l:
             self.board.pop(a)
             self.board.insert(a, 'b')
+        self.b_Boarder = l  # store list to object
 
         # left index value = r
         l = []
@@ -218,6 +221,7 @@ class Board:
         for a in l:
             self.board.pop(a)
             self.board.insert(a, 'l')
+        self.l_Boarder = l  # store list to object
 
         # right index value = r
         l = []
@@ -226,25 +230,30 @@ class Board:
         for a in l:
             self.board.pop(a)
             self.board.insert(a, 'r')
+        self.r_Boarder = l  # store list to object
 
         # top left hidden value = a
         self.board.pop(0)
         self.board.insert(0, 'tl')
+        self.tl_Boarder = 0  # store list to object
 
         # top right hidden value = b
         i = positionToIndex(self.w, 1, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'tr')
+        self.tr_boarder = i  # store list to object
 
         # bottom left hidden value = c
         i = positionToIndex(1, self.h, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'bl')
+        self.bl_boarder = i  # store list to object
 
         # bottom right hidden value = d
         i = positionToIndex(self.w, self.h, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'br')
+        self.br_boarder = i  # store list to object
 
     def boardRenderer(self):
         i = 0
@@ -317,10 +326,20 @@ class Board:
         """
         docstring
         """
-        t = findAllIndex(self.board, 't')
-        b = findAllIndex(self.board, 'b')
-        l = findAllIndex(self.board, 'l')
-        r = findAllIndex(self.board, 'r')
+        status = 'Null'
+        for c in self.l_Boarder:
+            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+                status = 'left'
+        for c in self.r_Boarder:
+            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+                status = 'right'
+        for c in self.t_Boarder:
+            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+                status = 'top'
+        for c in self.b_Boarder:
+            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+                status = 'bottom'
+        return status
 
 
 # Ship Placement from user input; with variable ship size/number according to board size

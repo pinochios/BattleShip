@@ -51,7 +51,7 @@ smallShip.initHitbox(board)"""
 
 board.placeShip(largeShip)
 board.boardRenderer()
-keyboardShipMove(largeShip, board)
+keyboardShipMove(largeShip, board, boardHiddenval)
 
 # __test__ : move ship
 """
