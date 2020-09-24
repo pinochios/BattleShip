@@ -1,5 +1,4 @@
-from threading import Thread
-from msvcrt import getch
+
 import click
 
 
@@ -74,16 +73,16 @@ Thread(target=KeyCheck).start()
 # BACKGROUND CODE"""
 
 
-class Ship:  # TODO - Init all needed variables
-    def __init__(self, shipLength, shipWidth):
-        self.shipLength = shipLength
-        self.shipWidth = shipWidth
+def findAllIndex(list, givenValue):
+    """
+    docstring : find all index with the value given in a list
+    """
+    result = []
+    for index, value in enumerate(list):
+        if value == givenValue:
+            result.append(index)
+    return result
 
-    def add(self, x, y):
-        self.x = x
-        self.y = y
 
-
-a = Ship(1, 2)
-a.add(5, 6)
-print(a.x)
+list = [0, 0, 2, 2, 0, 2]
+print(findValueAllIndex(list, 2))

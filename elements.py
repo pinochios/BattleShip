@@ -1,12 +1,25 @@
 # __import__
 import math
+import click
 from random import randint
 
 from error import *
 from header import *
+from keyboardInput import *
 
 # __main functions__
 # Find the index in a list[?] when given a coordinate[x,y]
+
+
+def findAllIndex(list, givenValue):
+    """
+    docstring : find all index with the value given in a list
+    """
+    result = []
+    for index, value in enumerate(list):
+        if value == givenValue:
+            result.append(index)
+    return result
 
 
 def positionToIndex(x, y, w, h):
@@ -127,9 +140,38 @@ def positionInput(w, h, prompt):
     return[x, y]
 
 
-# def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
+def keyboardShipMove(Ship, Board):
+    """
+    docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
+    """
+    while True:
+        x = 0
+        y = 0
+        key = keyboardInput()
+        if key == 'up':
+            y = -1
+        elif key == 'down':
+            y = 1
+        elif key == 'left':
+            x = -1
+        elif key == 'right':
+            x = 1
+        elif key == 'ccv':
+            pass
+        elif key == 'cv':
+            pass
+        elif key == 'confirm':
+            break
 
-    # __main class__
+        click.clear()
+        Board.removeShip(Ship)
+        Ship.moveHitbox(x, y, Board)
+        Board.placeShip(Ship)
+        Board.boardRenderer()
+
+        # def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
+
+        # __main class__
 
 
 class Board:
@@ -270,6 +312,15 @@ class Board:
         for a in l:  # Replace Value using the Given Index
             self.board.pop(a)
             self.board.insert(a, '0')
+
+    def checkBoarder(self, ship):
+        """
+        docstring
+        """
+        t = findAllIndex(self.board, 't')
+        b = findAllIndex(self.board, 'b')
+        l = findAllIndex(self.board, 'l')
+        r = findAllIndex(self.board, 'r')
 
 
 # Ship Placement from user input; with variable ship size/number according to board size

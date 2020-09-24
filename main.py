@@ -1,3 +1,5 @@
+import click
+
 from elements import *
 from header import *
 # welcome menu
@@ -37,17 +39,29 @@ smallShip = Ship(smallShipSpec.shipSetup()[
                  0], smallShipSpec.shipSetup()[1])
 
 # init location of ship
-largeShip.initLocation(10)
+largeShip.initLocation(0)
 largeShip.initHitbox(board)
+"""mediumShip.initLocation(10)
+mediumShip.initHitbox(board)
+smallShip.initLocation(20)
+smallShip.initHitbox(board)"""
 #print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
 
+# move first ship
+
+board.placeShip(largeShip)
+board.boardRenderer()
+keyboardShipMove(largeShip, board)
+
+# __test__ : move ship
+"""
 # __test__ : move ship
 board.placeShip(largeShip)
 board.boardRenderer()
 board.removeShip(largeShip)
 largeShip.moveHitbox(-1, 2, board)
 board.placeShip(largeShip)
-board.boardRenderer()
+board.boardRenderer()"""
 
 """board.removeShip(largeShip)
 board.boardRenderer()"""
