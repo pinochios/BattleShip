@@ -149,13 +149,14 @@ def keyboardShipMove(Ship, Board, BoardHiddenValue):
         x = 0
         y = 0
         key = keyboardInput()
-        if key == 'up' and std_check != 'top':
+        # TODO - Fix algorithm
+        if key == 'up' and not (std_check == 'top' or std_check == 'tr' or std_check == 'tl'):
             y = -1
-        elif key == 'down' and std_check != 'bottom':
+        elif key == 'down' and not (std_check == 'bottom' or std_check == 'br' or std_check == 'bl'):
             y = 1
-        elif key == 'left' and std_check != 'left':
+        elif key == 'left' and not (std_check == 'left' or std_check == 'bl' or std_check == 'tl'):
             x = -1
-        elif key == 'right' and std_check != 'right':
+        elif key == 'right' and not (std_check == 'right' or std_check == 'br' or std_check == 'tr'):
             x = 1
         elif key == 'ccv':
             pass
@@ -241,19 +242,19 @@ class Board:
         i = positionToIndex(self.w, 1, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'tr')
-        self.tr_boarder = i  # store list to object
+        self.tr_Boarder = i  # store list to object
 
         # bottom left hidden value = c
         i = positionToIndex(1, self.h, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'bl')
-        self.bl_boarder = i  # store list to object
+        self.bl_Boarder = i  # store list to object
 
         # bottom right hidden value = d
         i = positionToIndex(self.w, self.h, self.w, self.h)
         self.board.pop(i)
         self.board.insert(i, 'br')
-        self.br_boarder = i  # store list to object
+        self.br_Boarder = i  # store list to object
 
     def boardRenderer(self):
         i = 0
@@ -328,17 +329,33 @@ class Board:
         """
         status = 'Null'
         for c in self.l_Boarder:
-            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+            if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
                 status = 'left'
         for c in self.r_Boarder:
-            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+            if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
                 status = 'right'
         for c in self.t_Boarder:
-            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+            if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
                 status = 'top'
         for c in self.b_Boarder:
-            if (ship.tl or ship.tr or ship.bl or ship.br) == c:
+            if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
                 status = 'bottom'
+
+        c = self.tl_Boarder
+        if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
+            status = 'tl'
+
+        c = self.tr_Boarder
+        if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
+            status = 'tr'
+
+        c = self.bl_Boarder
+        if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
+            status = 'bl'
+
+        c = self.br_Boarder
+        if (ship.tl == c or ship.tr == c or ship.bl == c or ship.br == c):
+            status = 'br'
         return status
 
 
