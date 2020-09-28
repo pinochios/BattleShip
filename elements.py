@@ -145,24 +145,29 @@ def keyboardShipMove(Ship, Board, BoardHiddenValue):
     docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
     """
     while True:
-        std_check = BoardHiddenValue.checkBoarder(Ship)
+        std_checkBoarder = BoardHiddenValue.checkBoarder(Ship)
+        std_checkOccupancy = Board.checkOccupancy(Ship)
         x = 0
         y = 0
         key = keyboardInput()
         # TODO - Fix algorithm
-        if key == 'up' and not (std_check == 'top' or std_check == 'tr' or std_check == 'tl'):
+        if key == 'up' and not (std_checkBoarder == 'top' or std_checkBoarder == 'tr' or std_checkBoarder == 'tl'):
             y = -1
-        elif key == 'down' and not (std_check == 'bottom' or std_check == 'br' or std_check == 'bl'):
+        elif key == 'down' and not (std_checkBoarder == 'bottom' or std_checkBoarder == 'br' or std_checkBoarder == 'bl'):
             y = 1
-        elif key == 'left' and not (std_check == 'left' or std_check == 'bl' or std_check == 'tl'):
+        elif key == 'left' and not (std_checkBoarder == 'left' or std_checkBoarder == 'bl' or std_checkBoarder == 'tl'):
             x = -1
-        elif key == 'right' and not (std_check == 'right' or std_check == 'br' or std_check == 'tr'):
+        elif key == 'right' and not (std_checkBoarder == 'right' or std_checkBoarder == 'br' or std_checkBoarder == 'tr'):
             x = 1
         elif key == 'ccv':
             pass
         elif key == 'cv':
-            pass
-        elif key == 'confirm':
+            click.clear()
+            Board.removeShip(Ship)
+            Ship.rotateCWHitbox(Board)
+            Board.placeShip(Ship)
+            Board.boardRenderer()
+        elif key == 'confirm' and not std_checkOccupancy:
             break
 
         click.clear()
@@ -324,8 +329,13 @@ class Board:
             self.board.insert(a, '0')
 
     def checkBoarder(self, ship):
-        """
-        docstring
+        """ ****USE WITH BOARDHIDDENVALUE*** Check if a ship is up against the boarder
+
+        Args:
+            ship (Ship[object]): use hitbox location to compare to boardhiddenvalue
+
+        Returns:
+            [string]: left, right, top, bottom, tl ,tr, bl ,br
         """
         status = 'Null'
         for c in self.l_Boarder:
@@ -358,6 +368,16 @@ class Board:
             status = 'br'
         return status
 
+    def checkOccupancy(self, ship):
+        """
+        docstring
+        """
+        for i, c in enumerate(self.board):
+            status = False
+            if c == 's' and (ship.tl == i or ship.tr == i or ship.bl == i or ship.br == i):
+                status = 'True'
+                break
+            return status
 
 # Ship Placement from user input; with variable ship size/number according to board size
 
@@ -385,11 +405,11 @@ class ShipSpec:
             print("Invalid Size")
 
         # Width of ship base on size of board
-        if area <= 100:
+        if area <= 65:
             shipWidth = 1
         elif area < 150:
             shipWidth = 2
-        elif area < 200:
+        elif area < 250:
             shipWidth = 3
         else:
             shipWidth = 4
@@ -475,16 +495,60 @@ class Ship:
 
     # Rotate Ship Clock Wise
 
-    """def rotateCWHitbox(self, board):
-        self.board = board
+    def rotateCWHitbox(self, board):
+        """self.board = board
         tl = self.tl # Anchor Point
         tr = self.tr
         bl = self.bl
         br = self.br
 
-        self.tr = br
-        self.bl = 
-        self.br = """
+        tl_x = self.tl_x
+        tl_y = self.tl_y
+        tr_x = self.tr_x
+        tr_y = self.tr_y
+        bl_x = self.bl_x
+        bl_y = self.bl_y
+        br_x = self.br_x
+        br_y = self.br_y"""
+
+        shipWidth = self.shipWidth
+        shipLength = self.shipLength
+
+        self.shipLength = shipWidth
+        self.shipWidth = shipLength
+
+        # self.tl = self.tl (anchor point)
+        self.tr = positionToIndex(
+            indexToPosition(self.tl, board.w, board.h)[
+                0] + self.shipWidth - 1,  # x
+            indexToPosition(self.tl, board.w, board.h)[1],  # y
+            board.w,
+            board.h
+        )
+        self.bl = positionToIndex(
+            indexToPosition(self.tl, board.w, board.h)[0],  # x
+            indexToPosition(self.tl, board.w, board.h)[
+                1] + self.shipLength - 1,  # y
+            board.w,
+            board.h
+        )
+        self.br = positionToIndex(
+            indexToPosition(self.tl, board.w, board.h)[
+                0] + self.shipWidth - 1,  # x
+            indexToPosition(self.tl, board.w, board.h)[
+                1] + self.shipLength - 1,  # y
+            board.w,
+            board.h
+        )
+
+        self.tl_x = indexToPosition(self.tl, board.w, board.h)[0]
+        self.tl_y = indexToPosition(self.tl, board.w, board.h)[1]
+        self.tr_x = indexToPosition(self.tr, board.w, board.h)[0]
+        self.tr_y = indexToPosition(self.tr, board.w, board.h)[1]
+        self.bl_x = indexToPosition(self.bl, board.w, board.h)[0]
+        self.bl_y = indexToPosition(self.bl, board.w, board.h)[1]
+        self.br_x = indexToPosition(self.br, board.w, board.h)[0]
+        self.br_y = indexToPosition(self.br, board.w, board.h)[1]
 
 
 """ # TODO - place func elsewhere

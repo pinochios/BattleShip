@@ -41,8 +41,9 @@ smallShip = Ship(smallShipSpec.shipSetup()[
 # init location of ship
 largeShip.initLocation(0)
 largeShip.initHitbox(board)
-"""mediumShip.initLocation(10)
+mediumShip.initLocation(0)
 mediumShip.initHitbox(board)
+"""
 smallShip.initLocation(20)
 smallShip.initHitbox(board)"""
 #print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
@@ -52,6 +53,12 @@ smallShip.initHitbox(board)"""
 board.placeShip(largeShip)
 board.boardRenderer()
 keyboardShipMove(largeShip, board, boardHiddenval)
+
+# move second ship
+
+board.placeShip(mediumShip)
+board.boardRenderer()
+keyboardShipMove(mediumShip, board, boardHiddenval)
 
 # __test__ : move ship
 """
