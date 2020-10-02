@@ -140,12 +140,12 @@ def positionInput(w, h, prompt):
     return[x, y]
 
 
-def keyboardShipMove(Ship, Board, BoardHiddenValue):
+def keyboardShipMove(Ship, Board, BoardBoarder, oldValue):
     """
     docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
     """
     while True:
-        std_checkBoarder = BoardHiddenValue.checkBoarder(Ship)
+        std_checkBoarder = BoardBoarder.checkBoarder(Ship)
         std_checkOccupancy = Board.checkOccupancy(Ship)
         x = 0
         y = 0
@@ -285,6 +285,7 @@ class Board:
             print()
 
     def placeShip(self, ship):
+        self.oldValue = []
         # import hitbox of ship
         tl_x = ship.tl_x
         tl_y = ship.tl_y
@@ -303,6 +304,7 @@ class Board:
             for y in range(h):
                 l.append(positionToIndex(tl_x+x, tl_y+y, self.w, self.h))
         for a in l:  # Replace Value using the Given Index
+            self.oldValue.append(self.board[a])   # Record Old Value
             self.board.pop(a)
             self.board.insert(a, 's')
 
@@ -324,9 +326,12 @@ class Board:
         for x in range(w):  # Add each position index that need to be change to list
             for y in range(h):
                 l.append(positionToIndex(tl_x+x, tl_y+y, self.w, self.h))
+
+        i = 0
         for a in l:  # Replace Value using the Given Index
             self.board.pop(a)
-            self.board.insert(a, '0')
+            self.board.insert(a, self.oldValue[i])
+            i += 1
 
     def checkBoarder(self, ship):
         """ ****USE WITH BOARDHIDDENVALUE*** Check if a ship is up against the boarder

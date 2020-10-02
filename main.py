@@ -18,9 +18,12 @@ boardSize = boardInput()
 board = Board(boardTemplate, boardSize[0], boardSize[1])
 board.boardGenerator()
 
-boardHiddenval = Board(boardTemplate2, boardSize[0], boardSize[1])
-boardHiddenval.boardGenerator()
-boardHiddenval.boardHiddenvalGenerator()
+boardBoarder = Board(boardTemplate2, boardSize[0], boardSize[1])
+boardBoarder.boardGenerator()
+boardBoarder.boardHiddenvalGenerator()
+
+boardTemporary = Board(boardTemplate3, boardSize[0], boardSize[1])
+boardTemporary.boardGenerator()
 
 # Render board by using var:board to render function
 board.boardRenderer()
@@ -52,13 +55,13 @@ smallShip.initHitbox(board)"""
 
 board.placeShip(largeShip)
 board.boardRenderer()
-keyboardShipMove(largeShip, board, boardHiddenval)
+keyboardShipMove(largeShip, board, boardBoarder, boardTemporary)
 
 # move second ship
 
 board.placeShip(mediumShip)
 board.boardRenderer()
-keyboardShipMove(mediumShip, board, boardHiddenval)
+keyboardShipMove(mediumShip, board, boardBoarder, boardTemporary)
 
 # __test__ : move ship
 """
