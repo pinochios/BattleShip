@@ -34,6 +34,9 @@ def indexToPosition(index, w, h):
     x = (index+1) % w
     y = math.ceil((index+1)/w)
 
+    if x == 0:
+        x = w
+
     return [x, y]
 
 # Return value when given a index
