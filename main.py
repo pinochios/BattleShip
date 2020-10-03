@@ -52,15 +52,12 @@ smallShip.initHitbox(board)"""
 #print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
 
 # move first ship
-
-board.placeShip(largeShip)
-board.boardRenderer()
+boardTemporary.placeShip(largeShip)  # first place ship in temporary board
 keyboardShipMove(largeShip, board, boardBoarder, boardTemporary)
 
 # move second ship
 
-board.placeShip(mediumShip)
-board.boardRenderer()
+boardTemporary.placeShip(mediumShip)  # first place ship in temporary board
 keyboardShipMove(mediumShip, board, boardBoarder, boardTemporary)
 
 # __test__ : move ship

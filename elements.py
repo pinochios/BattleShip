@@ -191,10 +191,11 @@ def positionInput(w, h, prompt):
     return[x, y]
 
 
-def keyboardShipMove(Ship, Board, BoardBoarder, oldValue):
+def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
     """
     docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
     """
+    BoardTemporary.boardRenderer()
     while True:
         std_checkBoarder = BoardBoarder.checkBoarder(Ship)
         std_checkOccupancy = Board.checkOccupancy(Ship)
@@ -214,18 +215,20 @@ def keyboardShipMove(Ship, Board, BoardBoarder, oldValue):
             pass
         elif key == 'cv':
             click.clear()
-            Board.removeShip(Ship)
+            BoardTemporary.removeShip(Ship)
             Ship.rotateHitbox(Board)
-            Board.placeShip(Ship)
-            Board.boardRenderer()
+            BoardTemporary.placeShip(Ship)
+            BoardTemporary.boardRenderer()
         elif key == 'confirm' and not std_checkOccupancy:
+            # copy the temporary board to the main board
+            Board.board = BoardTemporary.board.copy()
             break
 
         click.clear()
-        Board.removeShip(Ship)
+        BoardTemporary.removeShip(Ship)
         Ship.moveHitbox(x, y, Board)
-        Board.placeShip(Ship)
-        Board.boardRenderer()
+        BoardTemporary.placeShip(Ship)
+        BoardTemporary.boardRenderer()
 
         # def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
 
@@ -257,6 +260,7 @@ class Board:
     def boardBoarder(self):
         """
         generate boardBoarder base on w,h
+
         * USE IN CONJUNCTION WITH boardGenerator()*
         """
         # set board hidden value index
@@ -435,8 +439,10 @@ class Board:
             status = False
             if c == 's' and (ship.tl == i or ship.tr == i or ship.bl == i or ship.br == i):
                 status = 'True'
+                return status
                 break
-            return status
+
+        return status
 
 # Ship Placement from user input; with variable ship size/number according to board size
 
