@@ -357,15 +357,7 @@ class Board:
         """
         self.oldValue = []
 
-        # fill space occupied by ship
-        l = []
-        w = ship.tr_x-ship.tl_x+1
-        h = ship.br_y-ship.tl_y+1
-        for x in range(w):  # Add each position index that need to be change to list
-            for y in range(h):
-                l.append(positionToIndex(
-                    ship.tl_x+x, ship.tl_y+y, self.w, self.h))
-        for a in l:  # Replace Value using the Given Index
+        for a in ship.hitbox:  # Replace Value using the Given Hitbox Indices
             self.oldValue.append(self.board[a])   # Record Old Value
             self.board.pop(a)
             self.board.insert(a, 's')
@@ -377,16 +369,8 @@ class Board:
             ship (object): [ship to remove]
         """
         # fill space occupied by ship
-        l = []
-        w = ship.tr_x-ship.tl_x+1
-        h = ship.br_y-ship.tl_y+1
-        for x in range(w):  # Add each position index that need to be change to list
-            for y in range(h):
-                l.append(positionToIndex(
-                    ship.tl_x+x, ship.tl_y+y, self.w, self.h))
-
         i = 0
-        for a in l:  # Replace Value using the Given Index
+        for a in ship.hitbox:  # Replace Value using the Given Hitbox Indices
             self.board.pop(a)
             self.board.insert(a, self.oldValue[i])
             i += 1
@@ -519,7 +503,7 @@ class Ship:
         self.initIndex = initIndex
 
     def initHitbox(self, board):
-        """Generate all 4 points of hitbox
+        """Generate all 4 corneer of hitbox and entire hitbox as hitbox[list]
 
         Args:
             board (object): [description]
@@ -557,6 +541,15 @@ class Ship:
         self.br_x = indexToPosition(self.br, board.w, board.h)[0]
         self.br_y = indexToPosition(self.br, board.w, board.h)[1]
 
+        # Update Hitbox[List]
+        self.hitbox = []
+        w = self.tr_x-self.tl_x+1
+        h = self.br_y-self.tl_y+1
+        for x in range(w):  # Add each position index that need to be change to list
+            for y in range(h):
+                self.hitbox.append(positionToIndex(
+                    self.tl_x+x, self.tl_y+y, board.w, board.h))
+
     def moveHitbox(self, x, y, board):
         """Move Ship Hitbox
 
@@ -578,6 +571,15 @@ class Ship:
         self.tr = positionToIndex(self.tr_x, self.tr_y, board.w, board.h)
         self.bl = positionToIndex(self.bl_x, self.bl_y, board.w, board.h)
         self.br = positionToIndex(self.br_x, self.br_y, board.w, board.h)
+
+        # Update Hitbox[List]
+        self.hitbox = []
+        w = self.tr_x-self.tl_x+1
+        h = self.br_y-self.tl_y+1
+        for x in range(w):  # Add each position index that need to be change to list
+            for y in range(h):
+                self.hitbox.append(positionToIndex(
+                    self.tl_x+x, self.tl_y+y, board.w, board.h))
 
     def rotateHitbox(self, board):
         """ 
@@ -622,6 +624,15 @@ class Ship:
         self.bl_y = indexToPosition(self.bl, board.w, board.h)[1]
         self.br_x = indexToPosition(self.br, board.w, board.h)[0]
         self.br_y = indexToPosition(self.br, board.w, board.h)[1]
+
+        # Update Hitbox[List]
+        self.hitbox = []
+        w = self.tr_x-self.tl_x+1
+        h = self.br_y-self.tl_y+1
+        for x in range(w):  # Add each position index that need to be change to list
+            for y in range(h):
+                self.hitbox.append(positionToIndex(
+                    self.tl_x+x, self.tl_y+y, board.w, board.h))
 
 
 """ # TODO - place func elsewhere
