@@ -13,7 +13,7 @@ from keyboardInput import *
 
 def findAllIndex(list, givenValue):
     """
-    docstring : find all index with the value given in a list
+    find all index with the value given in a list
     """
     result = []
     for index, value in enumerate(list):
@@ -23,14 +23,33 @@ def findAllIndex(list, givenValue):
 
 
 def positionToIndex(x, y, w, h):
+    """Find the index when given a coordinate[x,y]
+
+    Args:
+        x ([int]): [x to convert]
+        y ([int]): [y to convert]
+        w ([int]): [board.w]
+        h ([int]): [board.w]
+
+    Returns:
+        [int]: [index]
+    """
     index = (x-1) + (y-1)*w
     #print("index:", index)
     return index
 
-# Find the coordinate[x,y] when given an index
-
 
 def indexToPosition(index, w, h):
+    """Find the coordinate[x,y] when given an index
+
+    Args:
+        index ([int]): [index to convert]
+        w ([int]): [board.w]
+        h ([int]): [board.w]
+
+    Returns:
+        [list]: [x,y]
+    """
     x = (index+1) % w
     y = math.ceil((index+1)/w)
 
@@ -39,30 +58,44 @@ def indexToPosition(index, w, h):
 
     return [x, y]
 
-# Return value when given a index
-
 
 def positionValue(index, board):
+    """
+    Return value when given a index
+    """
     value = board[index]
     # print(value)
     return value
 
-# alphabetical coordinate to coordinate
-
 
 def alpToCoordinate(x):
+    """
+    alphabetical coordinate to coordinate  
+    """
     x = alphabet.index(x) + 1
     return x
 
-#  coordinate to alphabetical coordinate
-
 
 def coordinateToAlp(x):
+    """
+    coordinate to alphabetical coordinate
+    """
     x = alphabet[x-1]
     return x
 
 
 def boardInput():
+    """Ask for user input for the board size (8-26)
+
+    Raises:
+        ValueTooLargeError: ["Maximum width is 26, please try again"]
+        ValueTooSmallError: ["Minimum width is 8, please try again"]
+        ValueTooLargeError: ["Maximum height is 26, please try again"]
+        ValueTooSmallError: ["Minimum height is 8, please try again"]
+
+    Returns:
+        [list]: [w,h]
+    """
     while True:
         try:
             w = int(input("Enter the width of the board: "))
@@ -105,6 +138,21 @@ def boardInput():
 
 
 def positionInput(w, h, prompt):
+    """Ask for user input of  x(a-z) and y(0-26) and convert to x(0-26) and y(0-26)
+
+    Args:
+        w (int): board width
+        h (int): board height
+        prompt (string): prompt to display
+
+    Raises:
+        ValueError: ["Invalid coordinate, please try again"]
+        ValueTooLargeError: ["Maximum coordinate x is (width),please try again"]
+        ValueTooSmallError: ["Maximum coordinate y is (height),please try again"]
+
+    Returns:
+        [list]: [x,y]
+    """
     print(prompt)
     while True:
         try:
@@ -167,7 +215,7 @@ def keyboardShipMove(Ship, Board, BoardBoarder, oldValue):
         elif key == 'cv':
             click.clear()
             Board.removeShip(Ship)
-            Ship.rotateCWHitbox(Board)
+            Ship.rotateHitbox(Board)
             Board.placeShip(Ship)
             Board.boardRenderer()
         elif key == 'confirm' and not std_checkOccupancy:
@@ -191,6 +239,9 @@ class Board:
         self.h = h
 
     def boardGenerator(self):
+        """
+        generate board base on w,h
+        """
         # set board index
         for x in range(self.w*self.h):
             self.board.append(0)
@@ -203,7 +254,11 @@ class Board:
                 board.append(0)
         """
 
-    def boardHiddenvalGenerator(self):  # TODO : add self
+    def boardBoarder(self):
+        """
+        generate boardBoarder base on w,h
+        * USE IN CONJUNCTION WITH boardGenerator()*
+        """
         # set board hidden value index
         # top vertical index value = t
         l = []
@@ -265,6 +320,9 @@ class Board:
         self.br_Boarder = i  # store list to object
 
     def boardRenderer(self):
+        """
+        Render Board
+        """
         i = 0
         print("   ", end='')
         # Index Row using a-z
@@ -288,47 +346,40 @@ class Board:
             print()
 
     def placeShip(self, ship):
+        """Place Ship Object onto the board using hitbox attribute
+
+        Args:
+            ship (object): [ship to place]
+        """
         self.oldValue = []
-        # import hitbox of ship
-        tl_x = ship.tl_x
-        tl_y = ship.tl_y
-        tr_x = ship.tr_x
-        tr_y = ship.tr_y
-        bl_x = ship.bl_x
-        bl_y = ship.bl_y
-        br_x = ship.br_x
-        br_y = ship.br_y
 
         # fill space occupied by ship
         l = []
-        w = tr_x-tl_x+1
-        h = br_y-tl_y+1
+        w = ship.tr_x-ship.tl_x+1
+        h = ship.br_y-ship.tl_y+1
         for x in range(w):  # Add each position index that need to be change to list
             for y in range(h):
-                l.append(positionToIndex(tl_x+x, tl_y+y, self.w, self.h))
+                l.append(positionToIndex(
+                    ship.tl_x+x, ship.tl_y+y, self.w, self.h))
         for a in l:  # Replace Value using the Given Index
             self.oldValue.append(self.board[a])   # Record Old Value
             self.board.pop(a)
             self.board.insert(a, 's')
 
     def removeShip(self, ship):
-        # import hitbox of ship
-        tl_x = ship.tl_x
-        tl_y = ship.tl_y
-        tr_x = ship.tr_x
-        tr_y = ship.tr_y
-        bl_x = ship.bl_x
-        bl_y = ship.bl_y
-        br_x = ship.br_x
-        br_y = ship.br_y
+        """Remove Ship Object onto the board using hitbox attribute
 
+        Args:
+            ship (object): [ship to remove]
+        """
         # fill space occupied by ship
         l = []
-        w = tr_x-tl_x+1
-        h = br_y-tl_y+1
+        w = ship.tr_x-ship.tl_x+1
+        h = ship.br_y-ship.tl_y+1
         for x in range(w):  # Add each position index that need to be change to list
             for y in range(h):
-                l.append(positionToIndex(tl_x+x, tl_y+y, self.w, self.h))
+                l.append(positionToIndex(
+                    ship.tl_x+x, ship.tl_y+y, self.w, self.h))
 
         i = 0
         for a in l:  # Replace Value using the Given Index
@@ -337,7 +388,7 @@ class Board:
             i += 1
 
     def checkBoarder(self, ship):
-        """ ****USE WITH BOARDHIDDENVALUE*** Check if a ship is up against the boarder
+        """ ****USE WITH BOARDBOARDER[object]*** Check if a ship is up against the boarder
 
         Args:
             ship (Ship[object]): use hitbox location to compare to boardhiddenvalue
@@ -397,6 +448,11 @@ class ShipSpec:
         self.shipSize = shipSize
 
     def shipSetup(self):  # TODO - Improve Ship Size Algorithm
+        """Configure ship size based on board width,height
+
+        Returns:
+            [list]: [shipLength, shipWidth]
+        """
         # Setup:
         area = self.w * self.h
         # Length of ship base on size of board
@@ -449,9 +505,19 @@ class Ship:
         self.shipWidth = shipWidth
 
     def initLocation(self, initIndex):
-        self.initIndex = initIndex  # Set starting Location
+        """Set starting Location
 
-    def initHitbox(self, board):  # Generate all 4 points of hitbox
+        Args:
+            initIndex ([int]): [index for starting position]
+        """
+        self.initIndex = initIndex
+
+    def initHitbox(self, board):
+        """Generate all 4 points of hitbox
+
+        Args:
+            board (object): [description]
+        """
         self.tl = self.initIndex
         self.tr = positionToIndex(
             indexToPosition(self.tl, board.w, board.h)[
@@ -485,8 +551,14 @@ class Ship:
         self.br_x = indexToPosition(self.br, board.w, board.h)[0]
         self.br_y = indexToPosition(self.br, board.w, board.h)[1]
 
-    # Move Ship Hitbox
     def moveHitbox(self, x, y, board):
+        """Move Ship Hitbox
+
+        Args:
+            x (int): delta x
+            y (int): delta y
+            board (obj): [description]
+        """
         self.tl_x = self.tl_x + x
         self.tl_y = self.tl_y + y
         self.tr_x = self.tr_x + x
@@ -501,23 +573,10 @@ class Ship:
         self.bl = positionToIndex(self.bl_x, self.bl_y, board.w, board.h)
         self.br = positionToIndex(self.br_x, self.br_y, board.w, board.h)
 
-    # Rotate Ship Clock Wise
-
-    def rotateCWHitbox(self, board):
-        """self.board = board
-        tl = self.tl # Anchor Point
-        tr = self.tr
-        bl = self.bl
-        br = self.br
-
-        tl_x = self.tl_x
-        tl_y = self.tl_y
-        tr_x = self.tr_x
-        tr_y = self.tr_y
-        bl_x = self.bl_x
-        bl_y = self.bl_y
-        br_x = self.br_x
-        br_y = self.br_y"""
+    def rotateHitbox(self, board):
+        """ 
+        rotate ship by updating all hitbox
+        """
 
         shipWidth = self.shipWidth
         shipLength = self.shipLength

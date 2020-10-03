@@ -20,7 +20,7 @@ board.boardGenerator()
 
 boardBoarder = Board(boardTemplate2, boardSize[0], boardSize[1])
 boardBoarder.boardGenerator()
-boardBoarder.boardHiddenvalGenerator()
+boardBoarder.boardBoarder()
 
 boardTemporary = Board(boardTemplate3, boardSize[0], boardSize[1])
 boardTemporary.boardGenerator()
