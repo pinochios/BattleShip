@@ -11,54 +11,26 @@ try:
 except SyntaxError:
     pass
 
+print("\n\n<<< Player 1 >>>\n")
+Player_1 = Player(input("What's your name?: "))
+print("\n\n<<< Player 2 >>>\n")
+Player_2 = Player(input("What's your name?: "))
+
 # Input Board Size
+print("\n<<< Boardsize setup >>>\n")
+print("(minimum size is 8 x 8)\n\n")
+
 boardSize = boardInput()
 
-# Generate board according to var:boardSize and pass it to var:board
-board = Board(boardTemplate, boardSize[0], boardSize[1])
-board.boardGenerator()
+Player_1.initBoard(boardSize)
+Player_1.initShip()
 
-boardBoarder = Board(boardTemplate2, boardSize[0], boardSize[1])
-boardBoarder.boardGenerator()
-boardBoarder.boardBoarder()
+Player_2.initBoard(boardSize)
+Player_2.initShip()
 
-boardTemporary = Board(boardTemplate3, boardSize[0], boardSize[1])
-boardTemporary.boardGenerator()
 
-# Render board by using var:board to render function
-board.boardRenderer()
 
-# ship objects
-largeShipSpec = ShipSpec(board.w, board.h, "large")
-largeShip = Ship(largeShipSpec.shipSetup()[
-                 0], largeShipSpec.shipSetup()[1])
 
-mediumShipSpec = ShipSpec(board.w, board.h, "medium")
-mediumShip = Ship(mediumShipSpec.shipSetup()[
-                  0], mediumShipSpec.shipSetup()[1])
-
-smallShipSpec = ShipSpec(board.w, board.h, "small")
-smallShip = Ship(smallShipSpec.shipSetup()[
-                 0], smallShipSpec.shipSetup()[1])
-
-# init location of ship
-largeShip.initLocation(0)
-largeShip.initHitbox(board)
-mediumShip.initLocation(0)
-mediumShip.initHitbox(board)
-"""
-smallShip.initLocation(20)
-smallShip.initHitbox(board)"""
-#print(largeShip.tl, largeShip.tr, largeShip.bl, largeShip.br)
-
-# move first ship
-boardTemporary.placeShip(largeShip)  # first place ship in temporary board
-keyboardShipMove(largeShip, board, boardBoarder, boardTemporary)
-
-# move second ship
-
-boardTemporary.placeShip(mediumShip)  # first place ship in temporary board
-keyboardShipMove(mediumShip, board, boardBoarder, boardTemporary)
 
 # __test__ : move ship
 """

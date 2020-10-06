@@ -8,8 +8,6 @@ from header import *
 from keyboardInput import *
 
 # __main functions__
-# Find the index in a list[?] when given a coordinate[x,y]
-
 
 def findAllIndex(list, givenValue):
     """
@@ -233,6 +231,65 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
         # def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
 
         # __main class__
+
+class Player():
+    def __init__(self, name):
+         self.name = name
+         self.status = False
+
+    def initBoard(self, boardSize):
+        """Init all necessary board for the player
+
+        Args:
+            boardSize([w,h]) - width height of board from user input
+        """
+        boardTemplate = []
+        self.board = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
+        self.board.boardGenerator()
+
+        self.boardBoarder = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
+        self.boardBoarder.boardGenerator()
+        self.boardBoarder.boardBoarder()
+
+        self.boardTemporary = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
+        self.boardTemporary.boardGenerator()
+
+    def initShip(self):
+        """ 
+        Init all ships to the board and let user move ships desire location
+        """
+        # ship objects
+        self.largeShipSpec = ShipSpec(self.board.w, self.board.h, "large")
+        self.largeShip = Ship(self.largeShipSpec.shipSetup()[
+                        0], self.largeShipSpec.shipSetup()[1])
+
+        self.mediumShipSpec = ShipSpec(self.board.w, self.board.h, "medium")
+        self.mediumShip = Ship(self.mediumShipSpec.shipSetup()[
+                        0], self.mediumShipSpec.shipSetup()[1])
+
+        self.smallShipSpec = ShipSpec(self.board.w, self.board.h, "small")
+        self.smallShip = Ship(self.smallShipSpec.shipSetup()[
+                        0], self.smallShipSpec.shipSetup()[1])
+        
+        # init ship
+        self.largeShip.initLocation(0)
+        self.largeShip.initHitbox(self.board)
+        self.mediumShip.initLocation(0)
+        self.mediumShip.initHitbox(self.board)
+        self.smallShip.initLocation(0)
+        self.smallShip.initHitbox(self.board)
+
+        # user move ships
+        self.boardTemporary.placeShip(self.largeShip)  # first place ship in temporary board
+        keyboardShipMove(self.largeShip, self.board, self.boardBoarder, self.boardTemporary)
+
+        self.boardTemporary.placeShip(self.mediumShip)  # first place ship in temporary board
+        keyboardShipMove(self.mediumShip, self.board, self.boardBoarder, self.boardTemporary)
+
+        self.boardTemporary.placeShip(self.smallShip)  # first place ship in temporary board
+        keyboardShipMove(self.smallShip, self.board, self.boardBoarder, self.boardTemporary)
+
+    
 
 
 class Board:
@@ -542,6 +599,7 @@ class Ship:
         self.br_y = indexToPosition(self.br, board.w, board.h)[1]
 
         # Update Hitbox[List]
+        
         self.hitbox = []
         w = self.tr_x-self.tl_x+1
         h = self.br_y-self.tl_y+1
@@ -549,6 +607,7 @@ class Ship:
             for y in range(h):
                 self.hitbox.append(positionToIndex(
                     self.tl_x+x, self.tl_y+y, board.w, board.h))
+        
 
     def moveHitbox(self, x, y, board):
         """Move Ship Hitbox
