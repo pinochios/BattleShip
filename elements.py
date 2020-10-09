@@ -1,6 +1,7 @@
 # __import__
 import math
 import click
+import sys
 from random import randint
 
 from error import *
@@ -166,6 +167,8 @@ def positionInput(w, h, prompt):
         except ValueTooLargeError:
             print("Maximum coordinate x is",
                   alphabet[w-1], ", please try again")
+        except KeyboardInterrupt:
+            sys.exit()
         else:
             break
     while True:
@@ -183,16 +186,19 @@ def positionInput(w, h, prompt):
             print("Maximum coordinate y is", h, ", please try again")
         except ValueTooSmallError:
             print("Minimum coordinate y is 1, please try again")
+        except KeyboardInterrupt:
+            sys.exit()
         else:
             break
 
     return[x, y]
 
 
-def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
+def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary, playerName):
     """
     docstring : import keyboard input and move Ship using moveHitbox(), boardRenderer()
     """
+    print(playerName, " place your ships:\n\n")
     BoardTemporary.boardRenderer()
     while True:
         std_checkBoarder = BoardBoarder.checkBoarder(Ship)
@@ -200,7 +206,7 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
         x = 0
         y = 0
         key = keyboardInput()
-        # TODO - Fix algorithm
+        click.clear()
         if key == 'up' and not (std_checkBoarder == 'top' or std_checkBoarder == 'tr' or std_checkBoarder == 'tl'):
             y = -1
         elif key == 'down' and not (std_checkBoarder == 'bottom' or std_checkBoarder == 'br' or std_checkBoarder == 'bl'):
@@ -215,17 +221,20 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
             click.clear()
             BoardTemporary.removeShip(Ship)
             Ship.rotateHitbox(Board)
-            BoardTemporary.placeShip(Ship)
-            BoardTemporary.boardRenderer()
         elif key == 'confirm' and not std_checkOccupancy:
             # copy the temporary board to the main board
             Board.board = BoardTemporary.board.copy()
             break
+        elif std_checkOccupancy:
+            print("----------------------- Space Already Occupied -----------------------")
+        else: 
+            print("----------------------- Invalid Input -----------------------")
 
-        click.clear()
+        
         BoardTemporary.removeShip(Ship)
         Ship.moveHitbox(x, y, Board)
         BoardTemporary.placeShip(Ship)
+        print("-----------------------", playerName, "place your ships" "-----------------------",)
         BoardTemporary.boardRenderer()
 
         # def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
@@ -235,7 +244,8 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary):
 class Player():
     def __init__(self, name):
          self.name = name
-         self.status = False
+         self.shipHit = 0
+         self.attempt = []
 
     def initBoard(self, boardSize):
         """Init all necessary board for the player
@@ -281,13 +291,13 @@ class Player():
 
         # user move ships
         self.boardTemporary.placeShip(self.largeShip)  # first place ship in temporary board
-        keyboardShipMove(self.largeShip, self.board, self.boardBoarder, self.boardTemporary)
+        keyboardShipMove(self.largeShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
 
         self.boardTemporary.placeShip(self.mediumShip)  # first place ship in temporary board
-        keyboardShipMove(self.mediumShip, self.board, self.boardBoarder, self.boardTemporary)
+        keyboardShipMove(self.mediumShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
 
         self.boardTemporary.placeShip(self.smallShip)  # first place ship in temporary board
-        keyboardShipMove(self.smallShip, self.board, self.boardBoarder, self.boardTemporary)
+        keyboardShipMove(self.smallShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
 
     
 
@@ -507,11 +517,10 @@ class ShipSpec:
             shipLength = math.floor(area/math.sqrt(area)/2)
         elif self.shipSize == "medium":
             shipLength = math.floor(area/math.sqrt(area)/2)
-            shipLength = shipLength - math.ceil(area/100)
+            shipLength = shipLength - 1
         elif self.shipSize == "small":
             shipLength = math.floor(area/math.sqrt(area)/2)
-            shipLength = shipLength - math.ceil(area/100)
-            shipLength = shipLength - math.ceil(area/100)
+            shipLength = shipLength - 2
         else:
             print("Invalid Size")
 
