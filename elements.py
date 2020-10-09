@@ -10,6 +10,7 @@ from keyboardInput import *
 
 # __main functions__
 
+
 def findAllIndex(list, givenValue):
     """
     find all index with the value given in a list
@@ -215,8 +216,6 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary, playerName):
             x = -1
         elif key == 'right' and not (std_checkBoarder == 'right' or std_checkBoarder == 'br' or std_checkBoarder == 'tr'):
             x = 1
-        elif key == 'ccv':
-            pass
         elif key == 'cv':
             click.clear()
             BoardTemporary.removeShip(Ship)
@@ -226,26 +225,28 @@ def keyboardShipMove(Ship, Board, BoardBoarder, BoardTemporary, playerName):
             Board.board = BoardTemporary.board.copy()
             break
         elif std_checkOccupancy:
-            print("----------------------- Space Already Occupied -----------------------")
-        else: 
+            print(
+                "----------------------- Space Already Occupied -----------------------")
+        else:
             print("----------------------- Invalid Input -----------------------")
 
-        
         BoardTemporary.removeShip(Ship)
         Ship.moveHitbox(x, y, Board)
         BoardTemporary.placeShip(Ship)
-        print("-----------------------", playerName, "place your ships" "-----------------------",)
+        print("-----------------------", playerName,
+              "place your ships" "-----------------------",)
         BoardTemporary.boardRenderer()
 
         # def shipGenerator(shipWidth, shipHeight, shipSize, shipNum):
 
         # __main class__
 
+
 class Player():
     def __init__(self, name):
-         self.name = name
-         self.shipHit = 0
-         self.attempt = []
+        self.name = name
+        self.shipHit = 0
+        self.attempt = []
 
     def initBoard(self, boardSize):
         """Init all necessary board for the player
@@ -257,11 +258,13 @@ class Player():
         self.board = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
         self.board.boardGenerator()
 
-        self.boardBoarder = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
+        self.boardBoarder = Board(
+            boardTemplate.copy(), boardSize[0], boardSize[1])
         self.boardBoarder.boardGenerator()
         self.boardBoarder.boardBoarder()
 
-        self.boardTemporary = Board(boardTemplate.copy(), boardSize[0], boardSize[1])
+        self.boardTemporary = Board(
+            boardTemplate.copy(), boardSize[0], boardSize[1])
         self.boardTemporary.boardGenerator()
 
     def initShip(self):
@@ -271,16 +274,16 @@ class Player():
         # ship objects
         self.largeShipSpec = ShipSpec(self.board.w, self.board.h, "large")
         self.largeShip = Ship(self.largeShipSpec.shipSetup()[
-                        0], self.largeShipSpec.shipSetup()[1])
+            0], self.largeShipSpec.shipSetup()[1])
 
         self.mediumShipSpec = ShipSpec(self.board.w, self.board.h, "medium")
         self.mediumShip = Ship(self.mediumShipSpec.shipSetup()[
-                        0], self.mediumShipSpec.shipSetup()[1])
+            0], self.mediumShipSpec.shipSetup()[1])
 
         self.smallShipSpec = ShipSpec(self.board.w, self.board.h, "small")
         self.smallShip = Ship(self.smallShipSpec.shipSetup()[
-                        0], self.smallShipSpec.shipSetup()[1])
-        
+            0], self.smallShipSpec.shipSetup()[1])
+
         # init ship
         self.largeShip.initLocation(0)
         self.largeShip.initHitbox(self.board)
@@ -290,16 +293,20 @@ class Player():
         self.smallShip.initHitbox(self.board)
 
         # user move ships
-        self.boardTemporary.placeShip(self.largeShip)  # first place ship in temporary board
-        keyboardShipMove(self.largeShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
+        # first place ship in temporary board
+        self.boardTemporary.placeShip(self.largeShip)
+        keyboardShipMove(self.largeShip, self.board,
+                         self.boardBoarder, self.boardTemporary, self.name)
 
-        self.boardTemporary.placeShip(self.mediumShip)  # first place ship in temporary board
-        keyboardShipMove(self.mediumShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
+        # first place ship in temporary board
+        self.boardTemporary.placeShip(self.mediumShip)
+        keyboardShipMove(self.mediumShip, self.board,
+                         self.boardBoarder, self.boardTemporary, self.name)
 
-        self.boardTemporary.placeShip(self.smallShip)  # first place ship in temporary board
-        keyboardShipMove(self.smallShip, self.board, self.boardBoarder, self.boardTemporary, self.name)
-
-    
+        # first place ship in temporary board
+        self.boardTemporary.placeShip(self.smallShip)
+        keyboardShipMove(self.smallShip, self.board,
+                         self.boardBoarder, self.boardTemporary, self.name)
 
 
 class Board:
@@ -608,7 +615,7 @@ class Ship:
         self.br_y = indexToPosition(self.br, board.w, board.h)[1]
 
         # Update Hitbox[List]
-        
+
         self.hitbox = []
         w = self.tr_x-self.tl_x+1
         h = self.br_y-self.tl_y+1
@@ -616,7 +623,6 @@ class Ship:
             for y in range(h):
                 self.hitbox.append(positionToIndex(
                     self.tl_x+x, self.tl_y+y, board.w, board.h))
-        
 
     def moveHitbox(self, x, y, board):
         """Move Ship Hitbox
