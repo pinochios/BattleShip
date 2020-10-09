@@ -105,10 +105,20 @@ while gameover == False:
     playingBoard = Board(p.attempt, boardSize[0], boardSize[1])
     playingBoard.boardGenerator()
     playingBoard.boardRenderer()
-        
 
-    raw_decision = positionInput(boardSize[0], boardSize[1],"guess the coordinate of the opponent's ships")
-    index_decision = positionToIndex(raw_decision[0],raw_decision[1],boardSize[0],boardSize[1])
+    inpt = False
+
+    while inpt == False:
+        raw_decision = positionInput(boardSize[0], boardSize[1],"guess the coordinate of the opponent's ships")
+        index_decision = positionToIndex(raw_decision[0],raw_decision[1],boardSize[0],boardSize[1])
+
+        if p.attempt[index_decision] == 's' or p.attempt[index_decision] == 'x':
+            print("coordinate already been occupied, please retry")
+            inpt = False
+        
+        else:
+            inpt = True
+    
 
     
         
@@ -202,7 +212,7 @@ while gameover == False:
 
     
 
-    if p.shipHit >= shipNeedToHit:
+    if p.shipHit == shipNeedToHit:
         gameover = True
     
     
