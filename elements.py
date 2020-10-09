@@ -155,7 +155,7 @@ def positionInput(w, h, prompt):
     print(prompt)
     while True:
         try:
-            x = str(input("x: "))
+            x = str(input("[alpabet] x: "))
             # Turn alpabetical coordinate to numerical coordinate
             x = alpToCoordinate(x)
             if x > w:
@@ -173,7 +173,7 @@ def positionInput(w, h, prompt):
             break
     while True:
         try:
-            y = int(input("y: "))
+            y = int(input("[number] y: "))
             if y > h:
                 raise ValueTooLargeError
             elif y < 1:

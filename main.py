@@ -86,6 +86,9 @@ turn = 0 #to know whose turn is it
 gameover = False
 
 shipNeedToHit = len(Player_1.largeShip.hitbox) + len(Player_1.mediumShip.hitbox) + len(Player_1.smallShip.hitbox)
+largeshipHit = 0
+mediumshipHit = 0
+smallshipHit = 0
 
 while gameover == False:
 
@@ -119,12 +122,19 @@ while gameover == False:
                     for a in p.largeShip.hitbox:
                         p.attempt[a] = 's'
                         p.shipHit += 1
+                    print("Hit!! large ship destroyed")
                         
                 if mode == '2':
                     p.attempt[index_decision] = 's'
                     p.shipHit += 1
+                    largeshipHit += 1
+                    
+                    if len(p.largeShip.hitbox) == largeshipHit:
+                        print("Hit!! large ship destroyed")
 
-                print("Hit !!")
+                    else:
+                        print("Hit !!")
+
                 hit = True
 
         for a in p.mediumShip.hitbox:
@@ -135,12 +145,19 @@ while gameover == False:
                     for a in p.mediumShip.hitbox:
                         p.attempt[a] = 's'
                         p.shipHit += 1
+                    print("Hit!! medium ship destroyed")
 
                 if mode == '2':
                     p.attempt[index_decision] = 's'
                     p.shipHit += 1
+                    mediumshipHit += 1
+                    
+                    if len(p.mediumShip.hitbox) == mediumshipHit:
+                        print("Hit!! medium ship destroyed")
 
-                print("Hit !!")
+                    else:
+                        print("Hit !!")
+                
                 hit = True
 
         for a in p.smallShip.hitbox:
@@ -151,17 +168,26 @@ while gameover == False:
                     for a in p.smallShip.hitbox:
                         p.attempt[a] = 's'
                         p.shipHit += 1
+                    print("Hit!! small ship destroyed")
 
                 if mode == '2':
                     p.attempt[index_decision] = 's'
                     p.shipHit += 1
+                    smallshipHit += 1
+                    
+                    if len(p.smallShip.hitbox) == smallshipHit:
+                        print("Hit!! small ship destroyed")
 
-                print("Hit !!")
+                    else:
+                        print("Hit !!")
+
+                
                 hit = True
 
         if hit == False:
             p.attempt[index_decision] = 'x'
             print("Oops, no ship there...")
+            turn += 1
 
         break
        
@@ -174,7 +200,7 @@ while gameover == False:
     except SyntaxError:
         pass
 
-    turn += 1
+    
 
     if p.shipHit >= shipNeedToHit:
         gameover = True
