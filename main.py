@@ -40,7 +40,7 @@ boardSize = boardInput()
 click.clear()
 print("------------------------------------------------")
 print("                                                ")
-print("      <<<",Player_1.name," ships setup >>>      ")
+print("      <<<", Player_1.name, " ships setup >>>      ")
 print("                                                ")
 print("------------------------------------------------")
 Player_1.initBoard(boardSize)
@@ -49,7 +49,7 @@ Player_1.initShip()
 click.clear()
 print("------------------------------------------------")
 print("                                                ")
-print("           <<<",Player_2.name," ships setup >>>      ")
+print("           <<<", Player_2.name, " ships setup >>>      ")
 print("                                                ")
 print("------------------------------------------------")
 Player_2.initBoard(boardSize)
@@ -78,37 +78,37 @@ while selectMode == False:
 
     if mode == '1' or mode == '2':
         selectMode = True
-    
+
     else:
         print("\n\nInvalide Mode\n\n")
 
-turn = 0 #to know whose turn is it
+turn = 0  # to know whose turn is it
 gameover = False
 
-shipNeedToHit = len(Player_1.largeShip.hitbox) + len(Player_1.mediumShip.hitbox) + len(Player_1.smallShip.hitbox)
+shipNeedToHit = len(Player_1.largeShip.hitbox) + \
+    len(Player_1.mediumShip.hitbox) + len(Player_1.smallShip.hitbox)
 
 while gameover == False:
 
     hit = False
 
-    if(turn%2 == 0):
+    if(turn % 2 == 0):
         p = Player_2
     else:
         p = Player_1
 
-    print("<<<   Attack ",p.name, "   >>>")
+    print("<<<   Attack ", p.name, "   >>>")
     print("------------------------------------------------")
 
     playingBoard = Board(p.attempt, boardSize[0], boardSize[1])
     playingBoard.boardGenerator()
     playingBoard.boardRenderer()
-        
 
-    raw_decision = positionInput(boardSize[0], boardSize[1],"guess the coordinate of the opponent's ships")
-    index_decision = positionToIndex(raw_decision[0],raw_decision[1],boardSize[0],boardSize[1])
+    raw_decision = positionInput(
+        boardSize[0], boardSize[1], "guess the coordinate of the opponent's ships")
+    index_decision = positionToIndex(
+        raw_decision[0], raw_decision[1], boardSize[0], boardSize[1])
 
-    
-        
     while hit == False:
 
         for a in p.largeShip.hitbox:
@@ -119,7 +119,7 @@ while gameover == False:
                     for a in p.largeShip.hitbox:
                         p.attempt[a] = 's'
                         p.shipHit += 1
-                        
+
                 if mode == '2':
                     p.attempt[index_decision] = 's'
                     p.shipHit += 1
@@ -130,7 +130,7 @@ while gameover == False:
         for a in p.mediumShip.hitbox:
 
             if index_decision == a:
-            
+
                 if mode == '1':
                     for a in p.mediumShip.hitbox:
                         p.attempt[a] = 's'
@@ -146,7 +146,7 @@ while gameover == False:
         for a in p.smallShip.hitbox:
 
             if index_decision == a:
-            
+
                 if mode == '1':
                     for a in p.smallShip.hitbox:
                         p.attempt[a] = 's'
@@ -164,7 +164,7 @@ while gameover == False:
             print("Oops, no ship there...")
 
         break
-       
+
     playingBoard.boardGenerator()
     playingBoard.boardRenderer()
 
@@ -178,15 +178,15 @@ while gameover == False:
 
     if p.shipHit >= shipNeedToHit:
         gameover = True
-    
-    
+
+
 click.clear()
 print("------------------------------------------------")
 print("-                                              -")
 print("-             <<< GameOver !! >>>              -")
 print("-                                              -")
 print("------------------------------------------------")
-print(p.name,"lose, play again for revenge -_-")
+print(p.name, "lose, play again for revenge -_-")
 
 # __test__ : move ship
 """
